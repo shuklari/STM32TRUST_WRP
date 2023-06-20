@@ -158,7 +158,6 @@ int main(void)
   * @param  state: WRP state enable/disable
   * @param  sectors: Flash Sectors to be programmed
   * @retval HAL_Status
-  *         Continuous Red LED blinking
   */
 HAL_StatusTypeDef set_WRP(uint32_t bank_num, uint32_t state, unsigned long sectors)
 {
@@ -231,7 +230,7 @@ HAL_StatusTypeDef set_WRP(uint32_t bank_num, uint32_t state, unsigned long secto
   * @brief  Error handler called on OB (WRP)configuration setting
   * @param  None
   * @retval None
-  *         Continuous Red LED blinking
+  *         Continuous Red LED toggle
   */
 static void WRP_Config_Error(void)
 {
