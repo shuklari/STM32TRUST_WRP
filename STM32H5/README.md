@@ -17,7 +17,7 @@ The program checks for pre-programmed flash sectors. If all the sectors are prog
 
 If not, the program checks for partially pre-programmed sectors, blinks USER_LED thrice every 500 ms and programs the remaining sectors per the OB_WRP_SECTORS define. Or, the program proceeds to program any new sectors per the #define.
 
-The program ends with GREEN LED flashing every 500 ms.
+The program ends with GREEN LED turned on.
 
 In case of a WRP config failure, USER_LED toggles every 100 ms.
 
@@ -51,7 +51,7 @@ System, GPIO, WRP, Option Bytes,
   - This example runs on STM32H503xx devices.
 
   - This example has been tested with NUCLEO-H503RB board and can be
-    easily tailored to any other supported device and development board. Details on NUCLEO-H723GZ, please visit https://www.st.com/en/microcontrollers-microprocessors/STM32H523-733.html
+    easily tailored to any other supported device and development board. Details on NUCLEO-H503RB, please visit https://www.st.com/en/microcontrollers-microprocessors/stm32h503rb.html
     
 
 ### <b>How to use it ?</b>
