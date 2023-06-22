@@ -35,6 +35,9 @@
 
 #ifdef WRP_ON
 
+#define OB_WRP_STATE 			OB_WRPSTATE_ENABLE
+#define OB_WRP_FLASH_BANK 		FLASH_BANK_1
+
 /*
  * Enable defines in order i.e. Test 1 followed by Test 2
  * WARNING or NOTE: Flash sectors 0 and 1 contain the application code.
@@ -43,11 +46,10 @@
  	 	 need to re-program the application.
 
  */
-
 /* Un-comment only for TEST 1: Program sectors 2,3 and 5 */
-#define OB_WRP_SECTORS (OB_WRP_SECTOR_2 | OB_WRP_SECTOR_3 | OB_WRP_SECTOR_5)
+#define OB_WRP_SECTORS (OB_WRP_SECTOR_2 | OB_WRP_SECTOR_3 | OB_WRP_SECTOR_6)
 
-/* Un-comment only for TEST 2: Program sector 6) */
+/* Un-comment only for TEST 2: Program sector 2) */
 //#define OB_WRP_SECTORS (OB_WRP_SECTOR_6)
 
 #endif /* WRP_ON */
@@ -72,7 +74,7 @@ static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
 #ifdef WRP_ON
 
-HAL_StatusTypeDef set_WRP(uint32_t bank_num, uint32_t state, unsigned long sectors);
+HAL_StatusTypeDef set_WRP(uint32_t bank_num, uint32_t state);
 static void WRP_Config_Error(void);
 
 #endif
@@ -117,7 +119,7 @@ int main(void)
 
   /* FLASH_BANK_1 and OB_WRPSTATE_ENABLE from stm32h7xx_hal_flash_ex.h file */
   /* OB_WRP_SECTORS defined in main.c */
-  err = set_WRP(FLASH_BANK_1, OB_WRPSTATE_ENABLE, OB_WRP_SECTORS);
+  err = set_WRP(OB_WRP_FLASH_BANK, OB_WRP_STATE);
 
   if (err == HAL_OK)
   {
@@ -158,16 +160,17 @@ int main(void)
   * @param  state: WRP state enable/disable
   * @param  sectors: Flash Sectors to be programmed
   * @retval HAL_Status
+  *         Continuous Red LED blinking
   */
-HAL_StatusTypeDef set_WRP(uint32_t bank_num, uint32_t state, unsigned long sectors)
+HAL_StatusTypeDef set_WRP(uint32_t bank_num, uint32_t state)
 {
 	HAL_StatusTypeDef err;
 	static FLASH_OBProgramInitTypeDef OB;
 
 
 	OB.OptionType = OPTIONBYTE_WRP;
-	OB.WRPState = state;	
-	OB.Banks = bank_num;	
+	OB.WRPState = state;	/* PB_WRPSTATE_ENABLE */
+	OB.Banks = bank_num;	/* FLASH_BANK_1 */
 
 	/* Fetch all OB type configuration (we need WRP sectors)
 	 * This step is to check if protection are already set
@@ -230,7 +233,7 @@ HAL_StatusTypeDef set_WRP(uint32_t bank_num, uint32_t state, unsigned long secto
   * @brief  Error handler called on OB (WRP)configuration setting
   * @param  None
   * @retval None
-  *         Continuous Red LED toggle
+  *         Continuous Red LED blinking
   */
 static void WRP_Config_Error(void)
 {
